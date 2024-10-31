@@ -42,7 +42,5 @@ public class UserServiceImpl implements UserService {
         udhi.cleanUsersTable();
     }
 
-    public void shutdown() {
-        udhi.shutdown();
-    }
+
 }
