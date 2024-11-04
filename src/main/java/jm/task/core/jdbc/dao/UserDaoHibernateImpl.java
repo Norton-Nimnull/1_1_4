@@ -25,8 +25,9 @@ public class UserDaoHibernateImpl implements UserDao {
             Query query = session.createSQLQuery(sql);
             query.executeUpdate();
             transaction.commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
-        catch (HibernateException e){e.printStackTrace();}
     }
 
     @Override
@@ -38,8 +39,9 @@ public class UserDaoHibernateImpl implements UserDao {
             query.executeUpdate();
 
             transaction.commit();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
-        catch(HibernateException e){e.printStackTrace();}
     }
 
     @Override
@@ -97,8 +99,9 @@ public class UserDaoHibernateImpl implements UserDao {
         List<User> list = null;
         try (Session session = Util.getSessionFactory().openSession();) {
             list = session.createQuery("from User").list();
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
-        catch (HibernateException e){e.printStackTrace();}
         return list;
     }
 
