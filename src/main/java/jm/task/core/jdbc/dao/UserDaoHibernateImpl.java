@@ -2,6 +2,7 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -25,6 +26,7 @@ public class UserDaoHibernateImpl implements UserDao {
             query.executeUpdate();
             transaction.commit();
         }
+        catch (HibernateException e){e.printStackTrace();}
     }
 
     @Override
@@ -37,6 +39,7 @@ public class UserDaoHibernateImpl implements UserDao {
 
             transaction.commit();
         }
+        catch(HibernateException e){e.printStackTrace();}
     }
 
     @Override
@@ -49,10 +52,10 @@ public class UserDaoHibernateImpl implements UserDao {
             User user = new User(name, lastName, age);
             user.setId(null);
             session.save(user);
-            //if (name.equals("ass")) { throw new RuntimeException("ass is not valid name!");}
+            //if (name.equals("ass")) { throw new HibernateException("ass is not valid name!");}
             //это проверка rollback, работает, коммент не удалил на всякий случай.
             transaction.commit();
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
                 e.printStackTrace();
@@ -79,7 +82,7 @@ public class UserDaoHibernateImpl implements UserDao {
             }
             session.flush();
             transaction.commit();
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             if (transaction != null) {
                 transaction.rollback();
             }
@@ -91,9 +94,12 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
+        List<User> list = null;
         try (Session session = Util.getSessionFactory().openSession();) {
-            return session.createQuery("from User").list();
+            list = session.createQuery("from User").list();
         }
+        catch (HibernateException e){e.printStackTrace();}
+        return list;
     }
 
     @Override
@@ -106,7 +112,7 @@ public class UserDaoHibernateImpl implements UserDao {
                 session.createQuery("delete from User").executeUpdate();
                 session.flush();
                 transaction.commit();
-            } catch (Exception e) {
+            } catch (HibernateException e) {
                 if (transaction != null) {
                     transaction.rollback();
                     e.printStackTrace();
