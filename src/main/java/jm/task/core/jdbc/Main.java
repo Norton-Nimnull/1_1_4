@@ -30,6 +30,6 @@ public class Main {
         usimp.removeUserById(3L);
         usimp.cleanUsersTable();
         usimp.dropUsersTable();
-        Util.shutdown_hib();
+        Util.shutdown_hibernate();
     }
 }

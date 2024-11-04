@@ -49,7 +49,7 @@ public class Util {
         return sessionFactory;
     }
 
-    public static void shutdown_hib() {
+    public static void shutdown_hibernate() {
         getSessionFactory().close();
     }
 
